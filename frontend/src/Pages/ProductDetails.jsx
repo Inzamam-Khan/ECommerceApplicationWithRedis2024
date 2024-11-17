@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useGetProductsById } from '../Hooks/useGetProductById'
 import { FaChevronCircleLeft, FaChevronLeft } from 'react-icons/fa'
 import {toast} from 'react-hot-toast'
-import { useSelectedLayoutSegment } from 'next/navigation'
+
 import { useSelector } from 'react-redux'
 import { useAuthContext } from '../AuthContext/authContext'
 import { useAddToCart } from '../Hooks/useAddToCart'
