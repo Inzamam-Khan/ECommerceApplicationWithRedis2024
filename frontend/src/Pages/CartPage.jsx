@@ -20,18 +20,21 @@ const stripePromise=loadStripe("pk_test_51Q4m3zLBf4EzHuMjNB1gFq8zLJQSjOMbZ0E3Ocj
 
 function CartPage() {
     let total=0
+    let deliveryCharges=0
+    console.log(deliveryCharges)
         const navigate=useNavigate()
         // const [cartItems,setCartItems]=useState(null)
         const cartItems=useSelector(state=>state.CartReducer)
         const dispatch=useDispatch()
         const {authUser}=useAuthContext()
+        
    
    
         const getCartItems=async()=>{
         const res=await fetch("/api/cart")
         const data=await res.json()
             dispatch(setCartItems(data))
-        // setCartItems(data)
+        
 
 
     }
@@ -60,16 +63,9 @@ function CartPage() {
     }
 
 
-
-    // const calculateTotal=()=>{
-    //   let subtotal=cartItems.reduce((sum,item)=>sum + (item.price * quantity) ,0)
-    //   let total=subtotal;
-
-    // }
-    {/*to do make globl state for user's cart items after fetching getCartItems dispatch setCartItems */}
     useEffect(()=>{
 getCartItems()
-// calculateTotal()
+
 
     },[authUser])
 
@@ -141,15 +137,17 @@ getCartItems()
                     
                         <div className=''>
               <div className="flex items-center justify-between gap-4">
+                {cartItems.map((item)=>{
+                  deliveryCharges+=item.price *5 /100
+                })}
                 <div className="text-base font-normal  ">Delivery</div>
-                <div className="text-base font-medium ">$99</div>
+                <div className="text-base font-medium ">{"₹ "}
+                  {parseInt(deliveryCharges).toLocaleString()}
+                  {/* {"₹ 79"} */}
+                </div>
               </div>
 
-              <div className="flex items-center justify-between gap-4">
-                <div className="text-base font-normal ">Savings</div>
-                <div className="text-base font-bold text-emerald-500">$799</div>
-              </div>
-            
+          
 
             <div className="flex items-center justify-between gap-4 border-t border-gray-400 pt-2 mt-1">
               <div className="text-base font-bold ">Total</div>
@@ -158,10 +156,17 @@ getCartItems()
                     
                     total+=(item.price) * item.quantity
                     
-                })
+                    
+                    
+                }
+                
+              )
+              
+                
                
               }
-               <div className="text-base font-bold ">{total.toLocaleString()}</div>
+              
+               <div className="text-base font-bold ">{parseInt(total+deliveryCharges).toLocaleString()}</div>
              
             </div>
           

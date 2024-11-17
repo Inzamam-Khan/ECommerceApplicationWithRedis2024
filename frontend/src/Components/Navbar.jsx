@@ -1,16 +1,15 @@
 import { FaUser } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom"
+import { Link, } from "react-router-dom"
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUnlock } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { CiLogin } from "react-icons/ci";
 import { IoMdHome } from "react-icons/io";
-import { useEffect, useState } from "react";
+
 import { useAuthContext } from "../AuthContext/authContext";
 import { useLogout } from "../Hooks/useLogout";
-import bagsCategory from '../assets/bgImages/bagsCategory.jpg'
-import { useSelector } from "react-redux";
+import appLogo from '../../public/vite.ico'
 export const Navbar=()=>{
    
     const handleRefreshToken=async()=>{
@@ -40,11 +39,14 @@ export const Navbar=()=>{
            
             <div className=" container flex justify-between  max-sm:flex-wrap items-center mx-auto  px-4 py-3 ">
                
-                <Link to="/" className={`cursor-pointer min-w-[9rem] text-2xl font-bold text-blue-400 items-center leading-normal ${window.location.pathname === `/signup`? 
+                <Link to="/" className={`flex flex-row-reverse jusity-center gap-4 cursor-pointer min-w-[9rem] text-2xl font-bold text-blue-400 items-center leading-normal ${window.location.pathname === `/signup`? 
                     ` bg-gradient-to-tr from-emerald-400 to-red-500 bg-clip-text text-transparent`:`${window.location.pathname == `/login `? `
                     bg-gradient-to-tr from-blue-400 to-red-500 bg-clip-text text-transparent`  :``}`
                     
-                    } `}>E-Commerce</Link>
+                    } `}>EzyShopzy
+                    <img src={appLogo} alt="" className="
+                    h-[2rem] w-[2rem] rounded-full   " />
+                    </Link>
                
                
                 <nav className="text-gray-300 flex max-sm:flex-wrap items-center gap-7 max-sm:w-1/2  max-sm:justify-end ">

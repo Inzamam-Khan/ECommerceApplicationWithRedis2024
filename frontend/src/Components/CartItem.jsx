@@ -95,7 +95,7 @@ function CartItem(props) {
             <span className='text-emerald-400 text-3xl mr-1'>₹
             </span>
 
-            {price}  per item
+            {price.toLocaleString()}  per item
           </p>
 
 <div className='font-bold w-[10rem] text-white flex flex-1 items-center justify-between'>
