@@ -1,7 +1,5 @@
 import React from 'react'
 import { MdDelete } from "react-icons/md";
-import demoImg from '../../../../../Desktop/lovyEdited.webp'
-import { useRef } from 'react'
 import { useState ,useEffect} from 'react'
 import toast from 'react-hot-toast';
 import { TiTick } from "react-icons/ti";
