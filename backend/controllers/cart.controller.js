@@ -1,4 +1,4 @@
-const { userAgent } = require("next/server");
+
 const User = require("../Models/userModel");
 const Product = require("../Models/productModel");
 
