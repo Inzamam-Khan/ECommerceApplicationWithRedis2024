@@ -1,7 +1,7 @@
 const Product = require("../Models/productModel")
 const { redis } = require('../DB/redis.js')
 const cloudinary = require("../DB/cloudinary.js")
-const { stringifyCookie } = require("next/dist/compiled/@edge-runtime/cookies")
+
 async function getAllProducts(req, res) {
     try {
         const products = await Product.find({})
