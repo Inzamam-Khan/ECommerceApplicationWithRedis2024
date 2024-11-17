@@ -12,23 +12,27 @@ async function addToCart(req, res) {
     try {
         const { productId } = req.body;
 
-
+        
         const userId = req.user._id;
         const user = await User.findById(userId)
-        const addedToCart = user.cartItems.find((item) => {
+        const addedToCart = user.cartItems.find((item) => 
+            // console.log(item._id.toString()== productId)
             item._id.toString() == productId
 
-        })
-        console.log(addedToCart)
+        )
+        console.log(`line 23 called ${addedToCart}`)
         if (addedToCart) {
-            user.cartItems.quantity += 1;
+            addedToCart.quantity+=1
+            // user.cartItems.quantity += 1;
         }
         else {
-            await User.findByIdAndUpdate(userId, {
-                $push: {
-                    cartItems: { productId }
-                }
-            }, { new: true })
+            // await User.findByIdAndUpdate(userId, {
+            //     $push: {
+            //         cartItems: { productId }
+            //     }
+            // }, { new: true })
+            user.cartItems.push(productId)
+            
 
         }
         await user.save()
@@ -101,8 +105,9 @@ async function removeAllFromCart(req, res) {
 }
 async function updateCart(req, res) {
     try {
-        const {productId}=req.params;
-        const {quantity}=req.body;
+        // const {productId}=req.params;
+        const {quantity,productId}=req.body;
+        console.log(`line 110 of update cart called ${productId}`)
         const userId=req.user._id;
         const user=await User.findById(userId);
 

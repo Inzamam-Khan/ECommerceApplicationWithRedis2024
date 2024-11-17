@@ -4,3 +4,11 @@ export const setProductsAction=(payload)=>{
         payload
     }
 }
+
+export const setCartItems=(payload)=>{
+    
+    return{
+        payload,
+        type:'SET_CART_ITEMS'
+    }
+}

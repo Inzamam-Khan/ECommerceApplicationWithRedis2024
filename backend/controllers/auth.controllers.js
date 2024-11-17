@@ -53,9 +53,10 @@ async function RefreshToken(req,res) {
 async function Login(req,res){
     try {
     const {userName,password}=req.body;
+   
     const {accessToken,refreshToken,user,error}=await User.matchPassword(userName,password)
 
-    
+    // console.log(error)
     if(!user) throw new Error(error)
 else{
             await storeRefreshToken(user._id,refreshToken)
@@ -79,13 +80,15 @@ async function Signup(req,res){
     const {userName,email,password}=req.body;
     
     try {
-        var user=await User.findOne({email});    
+        let user=await User.findOne({email});    
         if(user) return res.status(400).json({error:"User Already Exists!"})
     
          user=await User.create({
             userName,email,password
+            
     
         })
+    
         const {accessToken,refreshToken}=getToken(user._id)
 
         await storeRefreshToken(user._id,refreshToken)

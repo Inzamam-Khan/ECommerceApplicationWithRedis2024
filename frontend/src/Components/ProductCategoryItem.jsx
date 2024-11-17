@@ -1,18 +1,27 @@
-import React from 'react'
+import { FaCartPlus } from "react-icons/fa";
+import { BsCartCheckFill } from "react-icons/bs";import React from 'react'
 import {motion} from 'framer-motion'
-import { Link, useParams } from 'react-router-dom'
+import {  useNavigate, useParams } from 'react-router-dom'
+import { useAddToCart } from '../Hooks/useAddToCart';
+
+import { useAuthContext } from '../AuthContext/authContext';
 const ProductCategoryItem = (props) => {
     const {category}=useParams()
     
     
     const {name,price,description,image,_id}=props
+    const navigate=useNavigate()
+    const {handleAddToCart}=useAddToCart()
+    const {authUser}=useAuthContext()
+    const isAddedtoCart=authUser?.cartItems.filter((item)=> item._id === _id)
+    
+    
   return (
 
 
 
 
-<motion.div
-            
+<motion.div             
 
             initial={{ opacity: 0,y:30 }}
             whileInView={{ opacity: 1,y:0 }}
@@ -24,7 +33,7 @@ flex items-center flex-1 flex-col  border-gray-400 rounded-lg shadow text-gray-2
 ">
     
     
-        <img className="  mt-auto rounded-lg max-h-[13rem]  h-[10rem] w-1/2 sm:w-full border-red-500  object-fill" src={image} alt="" />
+        <img onClick={()=>navigate(`/category/${category}/${_id}`)} className="  mt-auto rounded-lg max-h-[13rem]  h-[10rem] w-1/2 sm:w-full border border-slate-500 cursor-pointer  object-fill" src={image} alt="" />
     
     <div className=" relative   mt-auto border-blue-500 p-2 w-full  ">
         
@@ -34,16 +43,17 @@ flex items-center flex-1 flex-col  border-gray-400 rounded-lg shadow text-gray-2
         <p className="font-normal sm:text-3xl text-2xl
          flex  items-center   gap-3 ">
             <span className='sm:hidden text-5xl '>Price</span> ₹ 
-           <span className='font-medium text-3xl sm:text-sm mt-auto  '> {price}</span>
+           <span className='font-medium text-3xl sm:text-sm mt-auto  '> {price.toLocaleString()}</span>
          
-           <Link to={`/category/${category}/${_id}`} className="flex items-center ml-4 sm:ml-auto
-           px-2 py-1 text-xs font-medium  text-white
-            bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
-            Details
-             <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </Link>
+           <button  className={`flex items-center ml-4 sm:ml-auto
+           px-2 py-1 text-xs font-medium  text-white bg-blue-400
+             rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 `}>
+            {isAddedtoCart?.length>0? <BsCartCheckFill size={18} className=""/>
+            :
+            <FaCartPlus size={18} onClick={()=>{handleAddToCart(_id)}}/>  }
+            
+           
+        </button>
            </p>
        
         {/*  */}

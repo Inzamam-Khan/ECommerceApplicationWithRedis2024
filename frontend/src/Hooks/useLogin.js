@@ -1,14 +1,16 @@
 import { useState } from "react"
 import { useAuthContext } from "../AuthContext/authContext"
 import {toast} from 'react-hot-toast'
+import { useDispatch } from "react-redux"
+import { setUser } from "../Store/Actions/UserActions"
 // import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 export function useLogin(){
 
-    const [user,setUser]=useState(null)
+    // const [user,setUser]=useState(null)
     const [loading,setLoading]=useState(false)
     const{setAuthUser}=useAuthContext()
-    // toast.configure()
+    const dispatch=useDispatch()
     
 
 
@@ -36,13 +38,15 @@ const Login=async(payload)=>{
         {   toast.success(`Welcome ${user.userName}`,{
             duration: 6000,
           })
-            setUser(user);
+            // setUser(user);
             setAuthUser(user)
+            dispatch(setUser(user))
             localStorage.setItem("authInfo",JSON.stringify(user))
+            
         }
         
     } catch (error) {
-        console.log(error.message)
+        
         toast.error(error.message,{
             duration: 3000,
           },
@@ -68,7 +72,7 @@ const Login=async(payload)=>{
 }
 
 
-return{Login,user,loading}
+return{Login,loading}
 
 
 

@@ -10,7 +10,7 @@ cartRoutes.post('/',protectRoutes,addToCart) //done
 
 cartRoutes.delete('/',protectRoutes,removeAllFromCart) //done
 
-cartRoutes.put('/:productId',protectRoutes,updateCart) //update cart Quantity done
+cartRoutes.put('/',protectRoutes,updateCart) //update cart Quantity done
 
 
 

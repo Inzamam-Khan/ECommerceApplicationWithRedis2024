@@ -43,34 +43,36 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function(next) {
+    if(!this.isModified("password")) return next()
+    console.log(`pre save function called`)
     const user = this;
-    console.log(`userModel == ${user}`)
-    const salt = randomBytes(16).toString();
-    const hashedPassword = createHmac("sha256", salt).update(user.password).digest("hex");
+    
+    const salt=randomBytes(16).toString();
+    const hashedPassword =createHmac("sha256",salt).update(user.password).digest("hex");
 
-    user.salt = salt;
-    user.password = hashedPassword;
+    user.salt =salt;
+    user.password =hashedPassword;
 
     next();
 
 })
 
 
-userSchema.static("matchPassword", async function (userName, password) {
-    
-    const user = await this.findOne({ userName });
-    
+userSchema.static("matchPassword",async function(userName,password){
     
     try {
+        const user = await this.findOne({userName});
+        console.log(user)       
         if (!user) throw new Error("User Not found!")
 
-        const salt = user?.salt;
-        const dbHashedPassword = user?.password;
+        const salt =user.salt;
+        const dbHashedPassword =user.password;
 
-        const userProvidedHash = createHmac('sha256', salt).update(password).digest("hex")
-
-        if (dbHashedPassword != userProvidedHash)
+        const userProvidedHash = createHmac("sha256",salt).update(password).digest("hex")
+            console.log("userprovidedhash",userProvidedHash)
+            console.log("dbhashedpassword",dbHashedPassword)
+        if(dbHashedPassword != userProvidedHash)
             { 
                 throw new Error("Invalid Credentials!")
 
@@ -79,13 +81,13 @@ userSchema.static("matchPassword", async function (userName, password) {
                 const {accessToken,refreshToken}=getToken(user._id)
 
                 // create and return token
-                return {accessToken,refreshToken,user,}          
+                return {accessToken,refreshToken,user}          
             }
       
 
     } catch (error) {
         return {error:error.message}
-
+S
     }
     
 

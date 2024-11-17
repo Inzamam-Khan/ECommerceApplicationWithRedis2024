@@ -3,8 +3,21 @@ import { CATEGORIES } from "../Constants"
 import {motion} from 'framer-motion'
 import { useGetProducts } from "../Hooks/useGetProducts"
 import { useEffect } from "react"
+import { useSelector } from "react-redux"
 export const Home=()=>{
     const {getProducts}=useGetProducts()
+    
+    const userReducer=useSelector(state=>state.UserReducer)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     useEffect(()=>{
         getProducts()
 

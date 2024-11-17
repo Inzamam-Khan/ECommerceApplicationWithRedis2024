@@ -8,15 +8,18 @@ async function createCheckoutSession(req,res){
 
     try {
         
-    const {products,code}=req.body;
-    if(!Array.isArray(products)){
+    const {cartItems}=req.body;
+    let code=null
+    
+    if(!Array.isArray(cartItems)){
         return res.status(400).json({error:'Invalid Requests!'})
 
     }
 
     let totalAmount=0;
 
-    const lineItems=products.map((product)=>{
+    const lineItems=cartItems?.map((product)=>{
+        
         const amount=Math.round(product.price * 100);
         totalAmount+=amount * product.quantity
         
@@ -27,10 +30,13 @@ async function createCheckoutSession(req,res){
                     name:product.name,
                     images:[product.image],
                 },
-                unit_amount:amount
-            }
+                unit_amount:amount,
+                
+            },
+            quantity:product?.quantity
         }
     })
+    
 
     let coupon=null;
     
@@ -43,7 +49,7 @@ async function createCheckoutSession(req,res){
     }
 
     const session=await stripe.checkout.sessions.create({
-        payment_method_types:["card","paypal"],
+        payment_method_types:["card",],
         line_items:lineItems,
         mode:"payment",
         success_url:`${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
@@ -57,7 +63,7 @@ async function createCheckoutSession(req,res){
             userId:req.user._id.toString(),
             couponCode:code || "",
             products:JSON.stringify(
-                products.map((p)=>({
+                cartItems.map((p)=>({
                     id:p._id,
                     quantity:p.quantity,
                     price:p.price
@@ -65,6 +71,7 @@ async function createCheckoutSession(req,res){
             )
         }
     })
+    // console.log(session)
     if(totalAmount > 20000){
         await createNewCoupon(req.user._id);
 
@@ -87,6 +94,7 @@ return error.message
 async function checkoutSuccess(req,res){
     try {
         const {sessionId}=req.body;
+        
         const session =await stripe.checkout.sessions.retrieve(sessionId);
 
         if(session.payment_status === "paid"){
@@ -132,6 +140,25 @@ return error.message
         
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 async function createStripeCoupon(discountPercentage) {

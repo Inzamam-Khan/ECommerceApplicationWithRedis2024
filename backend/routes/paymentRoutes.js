@@ -4,7 +4,7 @@ const { createCheckoutSession, checkoutSuccess } = require("../controllers/payme
 const paymentRoutes=express.Router();
 
 paymentRoutes.post('/create-checkout-session',protectRoutes,createCheckoutSession);
-// paymentRoutes.post('/checkout-success',protectRoutes,checkoutSuccess);
+paymentRoutes.post('/checkout-success',protectRoutes,checkoutSuccess);
 
 
 

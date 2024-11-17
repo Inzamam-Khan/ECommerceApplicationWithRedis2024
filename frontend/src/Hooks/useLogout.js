@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useAuthContext } from "../AuthContext/authContext"
+import toast from "react-hot-toast"
 
 export const useLogout=()=>{
 
@@ -20,8 +21,9 @@ const{setAuthUser
                 }
                
             })
+            const {message}=await res.json()
             
-            if(!error){
+            if(message){
                 localStorage.clear("authInfo")
                 localStorage.clear("productsInfo")
                 setAuthUser(null)
