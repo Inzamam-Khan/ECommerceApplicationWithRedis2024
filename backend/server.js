@@ -14,7 +14,7 @@ const path = require('path');
 
 
 const app=express();
-const __dirname=path.resolve()
+const _dirname=path.resolve()
 
 
 
@@ -22,7 +22,7 @@ const __dirname=path.resolve()
 dotenv.config()
 app.use(express.json({limit:"50mb"}))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname,"/frontend/dist")))
+app.use(express.static(path.join(_dirname,"/frontend/dist")))
 
 
 
@@ -37,7 +37,7 @@ app.use('/api/coupons',couponRoutes)
 app.use('/api/payments',paymentRoutes)
 
 app.get("*",(req,res)=>{
-   res.sendFile(path.resolve(__dirname,"frontend","dist","index.html"))
+   res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"))
 })
 
 
