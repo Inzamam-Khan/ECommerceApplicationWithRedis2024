@@ -104,7 +104,7 @@ export const Navbar=()=>{
                     
                     </>)}
 
-                    <button onClick={handleRefreshToken} className="border px-2 rounded-md capitalize">refresh</button>
+                    {/* <button onClick={handleRefreshToken} className="border px-2 rounded-md capitalize">refresh</button> */}
                  
                 </nav>
             </div>

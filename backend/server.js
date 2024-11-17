@@ -8,12 +8,13 @@ const productRoutes = require('./routes/productsRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const path = require('path');
 
 
 
 
 const app=express();
-
+const __dirname=path.resolve()
 
 
 
@@ -21,7 +22,7 @@ const app=express();
 dotenv.config()
 app.use(express.json({limit:"50mb"}))
 app.use(cookieParser())
-
+app.use(express.static(path.join(__dirname,"/frontend/dist")))
 
 
 
@@ -34,6 +35,10 @@ app.use('/api/products',productRoutes)
 app.use('/api/cart',cartRoutes)
 app.use('/api/coupons',couponRoutes)
 app.use('/api/payments',paymentRoutes)
+
+app.get("*",(req,res)=>{
+   res.sendFile(path.resolve(__dirname,"frontend","dist","index.html"))
+})
 
 
 
