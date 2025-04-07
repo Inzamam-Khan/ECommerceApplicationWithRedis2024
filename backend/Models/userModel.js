@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        // select:false,
         required: [true, "Password is Required"],
         minlenth: [6, "Password must be atleast of length 6 "]
     },
@@ -45,7 +46,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", function(next) {
     if(!this.isModified("password")) return next()
-    console.log(`pre save function called`)
+    
     const user = this;
     
     const salt=randomBytes(16).toString();
@@ -63,15 +64,14 @@ userSchema.static("matchPassword",async function(userName,password){
     
     try {
         const user = await this.findOne({userName});
-        console.log(user)       
+               
         if (!user) throw new Error("User Not found!")
 
         const salt =user.salt;
         const dbHashedPassword =user.password;
 
         const userProvidedHash = createHmac("sha256",salt).update(password).digest("hex")
-            console.log("userprovidedhash",userProvidedHash)
-            console.log("dbhashedpassword",dbHashedPassword)
+           
         if(dbHashedPassword != userProvidedHash)
             { 
                 throw new Error("Invalid Credentials!")

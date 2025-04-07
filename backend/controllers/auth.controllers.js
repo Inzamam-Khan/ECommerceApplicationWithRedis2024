@@ -55,8 +55,9 @@ async function Login(req,res){
     const {userName,password}=req.body;
    
     const {accessToken,refreshToken,user,error}=await User.matchPassword(userName,password)
+    
 
-    // console.log(error)
+    
     if(!user) throw new Error(error)
 else{
             await storeRefreshToken(user._id,refreshToken)
@@ -85,9 +86,11 @@ async function Signup(req,res){
     
          user=await User.create({
             userName,email,password
+
             
     
         })
+        
     
         const {accessToken,refreshToken}=getToken(user._id)
 
@@ -99,6 +102,7 @@ async function Signup(req,res){
         return res.status(201).json({user,message:"User Created Successfully"})
         
     } catch (error) {
+        console.log(`line 102 of authcontroller signup funcion ${error}`)
         return res.status(500).json({error:error.message})
         
 
